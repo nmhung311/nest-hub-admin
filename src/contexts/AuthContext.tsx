@@ -14,6 +14,7 @@ export interface User {
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -49,6 +50,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     navigate('/dashboard');
   };
 
+  const register = async (email: string, password: string, name: string) => {
+    // Mock registration
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Create mock user
+    const mockUser: User = {
+      id: Math.random().toString(36).substr(2, 9),
+      email,
+      name,
+      role: 'VIEWER',
+    };
+    
+    setUser(mockUser);
+    localStorage.setItem('user', JSON.stringify(mockUser));
+    localStorage.setItem('token', 'mock-jwt-token');
+    navigate('/dashboard');
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
@@ -57,7 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, login, register, logout, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

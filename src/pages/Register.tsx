@@ -7,11 +7,13 @@ import { useToast } from '@/hooks/use-toast';
 import { Building2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export default function Login() {
+export default function Register() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login, isAuthenticated } = useAuth();
+  const { register, isAuthenticated } = useAuth();
   const { toast } = useToast();
 
   if (isAuthenticated) {
@@ -21,18 +23,28 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      toast({
+        title: 'Passwords do not match',
+        description: 'Please make sure your passwords match.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
-      await login(email, password);
+      await register(email, password, name);
       toast({
-        title: 'Login successful',
-        description: 'Welcome back!',
+        title: 'Registration successful',
+        description: 'Welcome to Department Manager!',
       });
     } catch (error) {
       toast({
-        title: 'Login failed',
-        description: 'Invalid credentials. Please try again.',
+        title: 'Registration failed',
+        description: 'Unable to create account. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -67,7 +79,7 @@ export default function Login() {
                 <span className="text-foreground">Manager</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-md">
-                Powerful admin dashboard for managing departments, teams, users, and permissions with ease.
+                Join our powerful admin dashboard for managing departments, teams, users, and permissions with ease.
               </p>
             </div>
 
@@ -98,24 +110,36 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Right Column - Login Form */}
+        {/* Right Column - Register Form */}
         <div className="flex-1 flex items-center justify-center p-8 lg:p-12 xl:p-16 lg:border-l lg:border-border/50 backdrop-blur-sm bg-card/30">
           <div className="w-full max-w-md space-y-8">
             {/* Form Header */}
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tight text-foreground">Welcome back</h2>
-              <p className="text-muted-foreground">Sign in to access your dashboard</p>
+              <h2 className="text-3xl font-bold tracking-tight text-foreground">Create an account</h2>
+              <p className="text-muted-foreground">Sign up to get started with your dashboard</p>
             </div>
 
-            {/* Login Form */}
+            {/* Register Form */}
             <div className="space-y-6">
               <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-foreground/90">Full Name</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="John Doe"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className="h-11 bg-background/50 border-border/50 focus:border-primary/50 transition-all"
+                  />
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-foreground/90">Email</Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="admin@example.com"
+                    placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -131,6 +155,20 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    minLength={6}
+                    className="h-11 bg-background/50 border-border/50 focus:border-primary/50 transition-all"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword" className="text-foreground/90">Confirm Password</Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    placeholder="••••••••"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    minLength={6}
                     className="h-11 bg-background/50 border-border/50 focus:border-primary/50 transition-all"
                   />
                 </div>
@@ -139,26 +177,16 @@ export default function Login() {
                   className="w-full h-11 bg-gradient-primary hover:opacity-90 transition-opacity text-base font-medium shadow-md" 
                   disabled={loading}
                 >
-                  {loading ? 'Signing in...' : 'Sign in'}
+                  {loading ? 'Creating account...' : 'Create account'}
                 </Button>
               </form>
               
-              {/* Demo Info */}
-              <div className="rounded-lg border border-border/50 bg-muted/30 p-4">
-                <p className="text-xs font-medium text-muted-foreground mb-2">Demo Accounts:</p>
-                <div className="space-y-1">
-                  <p className="text-xs text-muted-foreground/80 font-mono">admin@example.com</p>
-                  <p className="text-xs text-muted-foreground/80 font-mono">editor@example.com</p>
-                  <p className="text-xs text-muted-foreground/60 mt-2">Use any password</p>
-                </div>
-              </div>
-
-              {/* Link to Register */}
+              {/* Link to Login */}
               <div className="text-center">
                 <p className="text-sm text-muted-foreground">
-                  Don't have an account?{' '}
-                  <Link to="/register" className="text-primary hover:underline font-medium">
-                    Sign up
+                  Already have an account?{' '}
+                  <Link to="/login" className="text-primary hover:underline font-medium">
+                    Sign in
                   </Link>
                 </p>
               </div>
