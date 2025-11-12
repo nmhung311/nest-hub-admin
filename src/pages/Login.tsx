@@ -3,7 +3,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Building2 } from 'lucide-react';
 
@@ -41,61 +40,75 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-primary shadow-glow">
-            <Building2 className="h-8 w-8 text-primary-foreground" />
+    <div className="relative flex min-h-screen items-center justify-center bg-background p-4 overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-20 w-72 h-72 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent/20 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative w-full max-w-md space-y-8">
+        {/* Logo and Title */}
+        <div className="text-center space-y-3">
+          <div className="inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-primary shadow-glow animate-in zoom-in duration-500">
+            <Building2 className="h-10 w-10 text-primary-foreground" />
           </div>
-          <div className="text-center">
-            <h1 className="text-3xl font-bold tracking-tight">Department Manager</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Sign in to your admin dashboard</p>
+          <div className="space-y-1">
+            <h1 className="text-4xl font-bold tracking-tight bg-gradient-primary bg-clip-text text-transparent">
+              Department Manager
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              Sign in to access your dashboard
+            </p>
           </div>
         </div>
 
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle>Welcome back</CardTitle>
-            <CardDescription>Enter your credentials to access the admin panel</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="admin@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="transition-all focus:shadow-sm"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="transition-all focus:shadow-sm"
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'Signing in...' : 'Sign in'}
-              </Button>
-            </form>
-            
-            <div className="mt-6 rounded-lg border border-border bg-muted/50 p-4">
-              <p className="text-xs font-semibold text-foreground">Demo Credentials:</p>
-              <p className="mt-1 text-xs text-muted-foreground">admin@example.com / any password</p>
-              <p className="text-xs text-muted-foreground">editor@example.com / any password</p>
+        {/* Login Form */}
+        <div className="backdrop-blur-xl bg-card/50 border border-border/50 rounded-2xl p-8 shadow-lg space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-foreground/90">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="admin@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="h-11 bg-background/50 border-border/50 focus:border-primary/50 transition-all"
+              />
             </div>
-          </CardContent>
-        </Card>
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-foreground/90">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="h-11 bg-background/50 border-border/50 focus:border-primary/50 transition-all"
+              />
+            </div>
+            <Button 
+              type="submit" 
+              className="w-full h-11 bg-gradient-primary hover:opacity-90 transition-opacity text-base font-medium shadow-md" 
+              disabled={loading}
+            >
+              {loading ? 'Signing in...' : 'Sign in'}
+            </Button>
+          </form>
+          
+          {/* Demo Info */}
+          <div className="pt-4 border-t border-border/50">
+            <p className="text-xs font-medium text-muted-foreground mb-2">Demo Accounts:</p>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground/80 font-mono">admin@example.com</p>
+              <p className="text-xs text-muted-foreground/80 font-mono">editor@example.com</p>
+              <p className="text-xs text-muted-foreground/60 mt-2">Use any password</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
