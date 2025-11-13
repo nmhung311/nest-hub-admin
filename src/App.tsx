@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import DashboardHome from "./pages/dashboard/DashboardHome";
+import Documents from "./pages/dashboard/Documents";
 import Departments from "./pages/dashboard/Departments";
 import Teams from "./pages/dashboard/Teams";
 import Users from "./pages/dashboard/Users";
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route index element={<DashboardHome />} />
+              <Route path="documents" element={<Documents />} />
               <Route path="departments" element={<Departments />} />
               <Route path="teams" element={<Teams />} />
               <Route path="users" element={<Users />} />

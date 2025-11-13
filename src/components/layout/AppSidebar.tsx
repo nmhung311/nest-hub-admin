@@ -6,6 +6,7 @@ import {
   FileText,
   LayoutDashboard,
   UsersRound,
+  FolderOpen,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -21,6 +22,7 @@ import {
 
 const menuItems = [
   { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
+  { title: 'Documents', url: '/dashboard/documents', icon: FolderOpen },
   { title: 'Departments', url: '/dashboard/departments', icon: Building2 },
   { title: 'Teams', url: '/dashboard/teams', icon: UsersRound },
   { title: 'Users', url: '/dashboard/users', icon: Users },
